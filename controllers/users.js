@@ -18,8 +18,26 @@ module.exports.getUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.patchUser = () => {
-
+module.exports.patchUser = (req, res, next) => {
+  const {
+    name,
+    about,
+  } = req.body;
+  User.findByIdAndUpdate(req.user._id, {
+    name,
+    about,
+  }, { new: true })
+    .then((user) => res.send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new ValidationError('Переданы некорректные данные о пользователе'));
+      }
+      if (err.name === 'CastError') {
+        next(new ValidationError('Передан некорректный ID пользователя'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -52,7 +70,7 @@ module.exports.createUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.login = (req, res, next) => {
+module.exports.signin = (req, res, next) => {
   const {
     email, password,
   } = req.body;
@@ -66,7 +84,7 @@ module.exports.login = (req, res, next) => {
         sameSite: 'None',
         domain: 'localhost',
       });
-      res.send({ message: 'login OK' });
+      res.send({ message: 'signin OK' });
     })
     .catch((err) => {
       next(new LoginError(err.message));
@@ -75,5 +93,5 @@ module.exports.login = (req, res, next) => {
 
 module.exports.signout = (req, res) => {
   res.clearCookie('jwt');
-  res.send({ message: 'logout OK' });
+  res.send({ message: 'signout OK' });
 };
