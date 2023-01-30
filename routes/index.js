@@ -9,10 +9,10 @@ const { validateSignIn, validateSignUp } = require('../middlewares/validatons');
 
 router.use('/signin', validateSignIn, signin);
 router.use('/signup', validateSignUp, createUser);
-router.use('/signout', signout);
 
 router.use('/', auth);
 
+router.use('/signout', signout);
 router.use('/users', userRouter);
 router.use('/movies', moviesRouter);
 

@@ -8,8 +8,9 @@ const cookieParser = require('cookie-parser');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/error-handler');
+const { devDBLink, devPort } = require('./utils/constants');
 
-const { PORT = 3000 } = process.env;
+const { PORT = devPort, DBLINK = devDBLink } = process.env;
 const app = express();
 
 app.use(cors());
@@ -18,7 +19,7 @@ app.use(express.json());
 
 mongoose.set('runValidators', true);
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(DBLINK, {
   useNewUrlParser: true,
 });
 
