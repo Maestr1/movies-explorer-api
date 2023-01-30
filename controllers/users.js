@@ -84,7 +84,7 @@ module.exports.signin = (req, res, next) => {
         sameSite: 'None',
         domain: 'localhost',
       });
-      res.send({ message: 'signin OK' });
+      res.send({ token });
     })
     .catch((err) => {
       next(new LoginError(err.message));
