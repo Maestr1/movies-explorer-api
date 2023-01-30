@@ -1,7 +1,7 @@
 const { celebrate } = require('celebrate');
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const { isEmail } = require('validator');
+const { isEmail, isURL } = require('validator');
 
 module.exports.validateSignUp = celebrate({
   body: Joi.object()
@@ -80,19 +80,109 @@ module.exports.validatePatchUser = celebrate({
     }),
 });
 
-module.exports.validationCardId = celebrate({
+module.exports.validateMovieBody = celebrate({
+  body: Joi.object()
+    .keys({
+      image: Joi.string()
+        .required()
+        .custom((value, helpers) => {
+          if (isURL(value)) {
+            return value;
+          }
+          return helpers.message('Введена некорректная ссылка');
+        })
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести ссылку на изображение',
+        }),
+      country: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести страну создания фильма',
+        }),
+      director: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести режисера фильма',
+        }),
+      duration: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести длительность фильма',
+        }),
+      year: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести год выпуска фильма',
+        }),
+      description: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести описание фильма',
+        }),
+      trailerLink: Joi.string()
+        .required()
+        .custom((value, helpers) => {
+          if (isURL(value)) {
+            return value;
+          }
+          return helpers.message('Введена некорректная ссылка');
+        })
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести ссылку на трейлер',
+        }),
+      nameRU: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести название фильма',
+        }),
+      nameEN: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести название фильма',
+        }),
+      thumbnail: Joi.string()
+        .required()
+        .custom((value, helpers) => {
+          if (isURL(value)) {
+            return value;
+          }
+          return helpers.message('Введена некорректная ссылка');
+        })
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести ссылку на изображение',
+        }),
+      movieId: Joi.string()
+        .required()
+        .messages({
+          'string.base': 'Данные должны быть строкой',
+          'any.required': 'Необходимо ввести ID фильма',
+        }),
+    }),
+});
+
+module.exports.validationMovieId = celebrate({
   params: Joi.object()
     .keys({
-      cardId: Joi.string()
+      _id: Joi.string()
         .required()
         .custom((value, helpers) => {
           if (mongoose.Types.ObjectId.isValid(value)) {
             return value;
           }
-          return helpers.message('Передан некорректный ID карточки');
+          return helpers.message('Передан некорректный ID фильма');
         })
         .messages({
-          'any.required': 'Не переданы данные о карточке',
+          'any.required': 'Не переданы данные о фильме',
         }),
     }),
 });
