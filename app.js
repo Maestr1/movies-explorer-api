@@ -1,6 +1,6 @@
 const express = require('express');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
-
 require('dotenv').config();
 const cors = require('cors');
 const { errors } = require('celebrate');
@@ -9,10 +9,12 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/error-handler');
 const { devDBLink, devPort } = require('./utils/constants');
+const { limiter } = require('./utils/limiterConfig');
 
 const { PORT = devPort, DBLINK = devDBLink } = process.env;
 const app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
@@ -24,6 +26,7 @@ mongoose.connect(DBLINK, {
 });
 
 app.use(requestLogger);
+app.use(limiter);
 app.use(routes);
 app.use(errorLogger);
 app.use(errors());

@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const userRouter = require('./users');
 const moviesRouter = require('./movies');
 const { signin, createUser, signout } = require('../controllers/users');
