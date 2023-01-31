@@ -1,5 +1,5 @@
 const {
-  NODE_ENV, JWT_SECRET = 'secret-key',
+  NODE_ENV, JWT_SECRET, FRONT_LINK = 'secret-key',
 } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -82,7 +82,7 @@ module.exports.signin = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         sameSite: 'None',
-        domain: 'localhost',
+        domain: NODE_ENV === 'production' ? FRONT_LINK : 'localhost',
       });
       res.send({ token });
     })

@@ -11,7 +11,7 @@ const errorHandler = require('./middlewares/error-handler');
 const { devDBLink, devPort } = require('./utils/constants');
 const { limiter } = require('./utils/limiterConfig');
 
-const { PORT = devPort, DBLINK = devDBLink } = process.env;
+const { PORT = devPort, DB_LINK = devDBLink } = process.env;
 const app = express();
 
 app.use(helmet());
@@ -21,7 +21,7 @@ app.use(express.json());
 
 mongoose.set('runValidators', true);
 
-mongoose.connect(DBLINK, {
+mongoose.connect(DB_LINK, {
   useNewUrlParser: true,
 });
 
