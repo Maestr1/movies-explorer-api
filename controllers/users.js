@@ -8,11 +8,12 @@ const LoginError = require('../errors/login');
 const ValidationError = require('../errors/validation');
 const NotUniqueError = require('../errors/not-unique');
 const NotFoundError = require('../errors/not-found');
+const { validationErrorMessage, notFoundErrorMessage, notUniqueErrorMessage } = require('../utils/errors');
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      next(new NotFoundError('Запрашиваемый пользователь не найден'));
+      next(new NotFoundError(notFoundErrorMessage));
     })
     .then((user) => res.send(user))
     .catch(next);
@@ -30,10 +31,10 @@ module.exports.patchUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные о пользователе'));
+        next(new ValidationError(validationErrorMessage));
       }
       if (err.name === 'CastError') {
-        next(new ValidationError('Передан некорректный ID пользователя'));
+        next(new ValidationError(validationErrorMessage));
       } else {
         next(err);
       }
@@ -58,10 +59,10 @@ module.exports.createUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            next(new ValidationError('Переданы некорректные данные о пользователе'));
+            next(new ValidationError(validationErrorMessage));
           }
           if (err.code === 11000) {
-            next(new NotUniqueError('Введенный Email уже используется'));
+            next(new NotUniqueError(notUniqueErrorMessage));
           } else {
             next(err);
           }

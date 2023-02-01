@@ -2,6 +2,7 @@ const Movie = require('../models/movies');
 const ValidationError = require('../errors/validation');
 const NotFoundError = require('../errors/not-found');
 const ForbiddenError = require('../errors/forbidden');
+const { notFoundErrorMessage, forbiddenErrorMessage, validationErrorMessage } = require('../utils/errors');
 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
@@ -42,7 +43,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные о карточке'));
+        next(new ValidationError(validationErrorMessage));
       } else {
         next(err);
       }
@@ -52,23 +53,23 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(req.params._id)
     .orFail(() => {
-      next(new NotFoundError('Запрашиваемая карточка не найдена'));
+      next(new NotFoundError(notFoundErrorMessage));
     })
     .then((card) => {
       if (!card.owner.equals(req.user._id)) {
-        next(new ForbiddenError('Нет прав для удаления этой карточки'));
+        next(new ForbiddenError(forbiddenErrorMessage));
         return;
       }
       Movie.findByIdAndRemove(req.params._id)
         .orFail(() => {
-          next(new NotFoundError('Запрашиваемая карточка не найдена'));
+          next(new NotFoundError(notFoundErrorMessage));
         })
         .then(() => res.send(card))
         .catch(next);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Переданы некорректные данные о карточке'));
+        next(new ValidationError(validationErrorMessage));
       } else {
         next(err);
       }

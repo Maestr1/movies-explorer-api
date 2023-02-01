@@ -2,6 +2,7 @@ const { celebrate } = require('celebrate');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const { isEmail, isURL } = require('validator');
+const { typeErrorMessage } = require('../utils/errors');
 
 module.exports.validateSignUp = celebrate({
   body: Joi.object()
@@ -92,37 +93,37 @@ module.exports.validateMovieBody = celebrate({
           return helpers.message('Введена некорректная ссылка');
         })
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести ссылку на изображение',
         }),
       country: Joi.string()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести страну создания фильма',
         }),
       director: Joi.string()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести режисера фильма',
         }),
       duration: Joi.string()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести длительность фильма',
         }),
       year: Joi.string()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести год выпуска фильма',
         }),
       description: Joi.string()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести описание фильма',
         }),
       trailerLink: Joi.string()
@@ -134,19 +135,19 @@ module.exports.validateMovieBody = celebrate({
           return helpers.message('Введена некорректная ссылка');
         })
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести ссылку на трейлер',
         }),
       nameRU: Joi.string()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести название фильма',
         }),
       nameEN: Joi.string()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести название фильма',
         }),
       thumbnail: Joi.string()
@@ -158,13 +159,13 @@ module.exports.validateMovieBody = celebrate({
           return helpers.message('Введена некорректная ссылка');
         })
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести ссылку на изображение',
         }),
-      movieId: Joi.string()
+      movieId: Joi.number()
         .required()
         .messages({
-          'string.base': 'Данные должны быть строкой',
+          'string.base': `${typeErrorMessage} числом`,
           'any.required': 'Необходимо ввести ID фильма',
         }),
     }),
