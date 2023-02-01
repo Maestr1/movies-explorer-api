@@ -2,7 +2,13 @@ const { celebrate } = require('celebrate');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const { isEmail, isURL } = require('validator');
-const { typeErrorMessage } = require('../utils/errors');
+const {
+  typeErrorMessage,
+  emailRequireErrorMessage,
+  passwordRequireMessage,
+  emailValidateErrorMessage,
+  linkValidateErrorMessage,
+} = require('../utils/errors');
 
 module.exports.validateSignUp = celebrate({
   body: Joi.object()
@@ -20,16 +26,16 @@ module.exports.validateSignUp = celebrate({
           if (isEmail(value)) {
             return value;
           }
-          return helpers.message('Введен некорректный Email');
+          return helpers.message(emailValidateErrorMessage);
         })
         .messages({
-          'any.required': 'Необходимо ввести Email',
+          'any.required': emailRequireErrorMessage,
         }),
       password: Joi.string()
         .required()
         .messages({
-          'string.empty': 'Пароль не может быть пустым',
-          'any.required': 'Необходимо ввести пароль',
+          'string.empty': passwordRequireMessage,
+          'any.required': passwordRequireMessage,
         }),
     }),
 });
@@ -43,16 +49,16 @@ module.exports.validateSignIn = celebrate({
           if (isEmail(value)) {
             return value;
           }
-          return helpers.message('Введен некорректный Email');
+          return helpers.message(emailValidateErrorMessage);
         })
         .messages({
-          'any.required': 'Необходимо ввести Email',
+          'any.required': emailRequireErrorMessage,
         }),
       password: Joi.string()
         .required()
         .messages({
-          'string.empty': 'Пароль не может быть пустым',
-          'any.required': 'Необходимо ввести пароль',
+          'string.empty': passwordRequireMessage,
+          'any.required': passwordRequireMessage,
         }),
     }),
 });
@@ -68,15 +74,11 @@ module.exports.validatePatchUser = celebrate({
           'string.max': 'В имени не должно быть более 30 символов',
         }),
       email: Joi.string()
-        .required()
         .custom((value, helpers) => {
           if (isEmail(value)) {
             return value;
           }
-          return helpers.message('Введен некорректный Email');
-        })
-        .messages({
-          'any.required': 'Необходимо ввести Email',
+          return helpers.message(emailValidateErrorMessage);
         }),
     }),
 });
@@ -90,7 +92,7 @@ module.exports.validateMovieBody = celebrate({
           if (isURL(value)) {
             return value;
           }
-          return helpers.message('Введена некорректная ссылка');
+          return helpers.message(linkValidateErrorMessage);
         })
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
@@ -132,7 +134,7 @@ module.exports.validateMovieBody = celebrate({
           if (isURL(value)) {
             return value;
           }
-          return helpers.message('Введена некорректная ссылка');
+          return helpers.message(linkValidateErrorMessage);
         })
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
@@ -156,7 +158,7 @@ module.exports.validateMovieBody = celebrate({
           if (isURL(value)) {
             return value;
           }
-          return helpers.message('Введена некорректная ссылка');
+          return helpers.message(linkValidateErrorMessage);
         })
         .messages({
           'string.base': `${typeErrorMessage} строкой`,

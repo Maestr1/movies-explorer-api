@@ -3,3 +3,7 @@ exports.forbiddenErrorMessage = 'Нет прав для совершения э�
 exports.validationErrorMessage = 'Переданы некорректные данные';
 exports.notUniqueErrorMessage = 'Введенные данные уже используются';
 exports.typeErrorMessage = 'Данные должны быть';
+exports.emailRequireErrorMessage = 'Необходимо ввести Email';
+exports.emailValidateErrorMessage = 'Введен некорректный Email';
+exports.passwordRequireMessage = 'Необходимо ввести пароль';
+exports.linkValidateErrorMessage = 'Введена некорректная ссылка';
