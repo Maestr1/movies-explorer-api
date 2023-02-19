@@ -12,10 +12,15 @@ const { devDBLink, devPort } = require('./utils/constants');
 const { limiter } = require('./utils/limiterConfig');
 
 const { PORT = devPort, DB_LINK = devDBLink } = process.env;
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
