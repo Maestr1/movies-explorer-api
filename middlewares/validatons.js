@@ -89,7 +89,7 @@ module.exports.validateMovieBody = celebrate({
       image: Joi.string()
         .required()
         .custom((value, helpers) => {
-          if (isURL(value)) {
+          if (isURL(value, { require_host: false })) {
             return value;
           }
           return helpers.message(linkValidateErrorMessage);
@@ -110,7 +110,7 @@ module.exports.validateMovieBody = celebrate({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести режисера фильма',
         }),
-      duration: Joi.string()
+      duration: Joi.number()
         .required()
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
@@ -155,10 +155,10 @@ module.exports.validateMovieBody = celebrate({
       thumbnail: Joi.string()
         .required()
         .custom((value, helpers) => {
-          if (isURL(value)) {
+          if (isURL(value, { require_host: false })) {
             return value;
           }
-          return helpers.message(linkValidateErrorMessage);
+          return helpers.message('linkValidateErrorMessage');
         })
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
@@ -170,7 +170,7 @@ module.exports.validateMovieBody = celebrate({
           'string.base': `${typeErrorMessage} числом`,
           'any.required': 'Необходимо ввести ID фильма',
         }),
-    }),
+    }).unknown(true),
 });
 
 module.exports.validationMovieId = celebrate({

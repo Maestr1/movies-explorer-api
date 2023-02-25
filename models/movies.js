@@ -38,7 +38,7 @@ const moviesSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (url) => isURL(url),
+      validator: (url) => isURL(url, { require_host: false }),
       message: 'Неправильный формат ссылки',
     },
   },
@@ -54,7 +54,7 @@ const moviesSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (url) => isURL(url),
+      validator: (url) => isURL(url, { require_host: false }),
       message: 'Неправильный формат ссылки',
     },
   },
