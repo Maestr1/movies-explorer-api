@@ -89,7 +89,7 @@ module.exports.validateMovieBody = celebrate({
       image: Joi.string()
         .required()
         .custom((value, helpers) => {
-          if (isURL(value, { require_host: false })) {
+          if (isURL(value)) {
             return value;
           }
           return helpers.message(linkValidateErrorMessage);
@@ -155,7 +155,7 @@ module.exports.validateMovieBody = celebrate({
       thumbnail: Joi.string()
         .required()
         .custom((value, helpers) => {
-          if (isURL(value, { require_host: false })) {
+          if (isURL(value)) {
             return value;
           }
           return helpers.message('linkValidateErrorMessage');
