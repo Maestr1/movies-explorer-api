@@ -7,6 +7,7 @@ const { notFoundErrorMessage, forbiddenErrorMessage, validationErrorMessage } = 
 module.exports.getMovies = (req, res, next) => {
   Movie.find({})
     .populate('owner')
+    .then((movieList) => movieList.filter((movie) => movie.owner._id.equals(req.user._id)))
     .then((movieList) => res.send(movieList))
     .catch(next);
 };

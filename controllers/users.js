@@ -1,5 +1,5 @@
 const {
-  NODE_ENV, JWT_SECRET, FRONT_LINK = 'secret-key',
+  NODE_ENV, JWT_SECRET = 'secret-key',
 } = process.env;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -22,11 +22,11 @@ module.exports.getUser = (req, res, next) => {
 module.exports.patchUser = (req, res, next) => {
   const {
     name,
-    about,
+    email,
   } = req.body;
   User.findByIdAndUpdate(req.user._id, {
     name,
-    about,
+    email,
   }, { new: true })
     .then((user) => res.send(user))
     .catch((err) => {
@@ -35,6 +35,9 @@ module.exports.patchUser = (req, res, next) => {
       }
       if (err.name === 'CastError') {
         next(new ValidationError(validationErrorMessage));
+      }
+      if (err.code === 11000) {
+        next(new NotUniqueError(notUniqueErrorMessage));
       } else {
         next(err);
       }
@@ -83,7 +86,7 @@ module.exports.signin = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         sameSite: 'None',
-        domain: NODE_ENV === 'production' ? FRONT_LINK : 'localhost',
+        // domain: NODE_ENV === 'production' ? FRONT_LINK : 'localhost',
       });
       res.send({ token });
     })
@@ -93,6 +96,9 @@ module.exports.signin = (req, res, next) => {
 };
 
 module.exports.signout = (req, res) => {
-  res.clearCookie('jwt');
+  res.clearCookie('jwt', {
+    secure: NODE_ENV === 'production',
+    sameSite: 'None',
+  });
   res.send({ message: 'signout OK' });
 };
