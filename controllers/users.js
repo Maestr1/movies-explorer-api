@@ -46,7 +46,7 @@ module.exports.patchUser = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, email, password,
+    name, email, password, apiToken,
   } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => {
@@ -54,6 +54,7 @@ module.exports.createUser = (req, res, next) => {
         name,
         email,
         password: hash,
+        apiToken,
       })
         .then((user) => {
           const userObject = user.toObject();
@@ -85,7 +86,7 @@ module.exports.signin = (req, res, next) => {
         secure: NODE_ENV === 'production',
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-        sameSite: 'None',
+        sameSite: NODE_ENV === 'production' ? 'None' : 'Strict',
         // domain: NODE_ENV === 'production' ? FRONT_LINK : 'localhost',
       });
       res.send({ token });
