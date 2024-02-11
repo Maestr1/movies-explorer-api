@@ -87,7 +87,7 @@ module.exports.validatePatchUser = celebrate({
 module.exports.validateMovieBody = celebrate({
   body: Joi.object()
     .keys({
-      image: Joi.string()
+      posterUrl: Joi.string()
         .required()
         .custom((value, helpers) => {
           if (isURL(value)) {
@@ -99,19 +99,19 @@ module.exports.validateMovieBody = celebrate({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести ссылку на изображение',
         }),
-      country: Joi.string()
+      countries: Joi.array()
         .required()
         .messages({
-          'string.base': `${typeErrorMessage} строкой`,
+          'array.base': `${typeErrorMessage} массивом`,
           'any.required': 'Необходимо ввести страну создания фильма',
         }),
       director: Joi.string()
-        .required()
+        // .required()
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести режисера фильма',
         }),
-      duration: Joi.number()
+      filmLength: Joi.string()
         .required()
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
@@ -124,13 +124,13 @@ module.exports.validateMovieBody = celebrate({
           'any.required': 'Необходимо ввести год выпуска фильма',
         }),
       description: Joi.string()
-        .required()
+        // .required()
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести описание фильма',
         }),
       trailerLink: Joi.string()
-        .required()
+        // .required()
         .custom((value, helpers) => {
           if (isURL(value)) {
             return value;
@@ -141,35 +141,53 @@ module.exports.validateMovieBody = celebrate({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести ссылку на трейлер',
         }),
-      nameRU: Joi.string()
+      nameRu: Joi.string()
         .required()
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести название фильма',
         }),
-      nameEN: Joi.string()
-        .required()
+      nameEn: Joi.any()
+        // .required()
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести название фильма',
         }),
       thumbnail: Joi.string()
-        .required()
+        // .required()
         .custom((value, helpers) => {
           if (isURL(value)) {
             return value;
           }
-          return helpers.message('linkValidateErrorMessage');
+          return helpers.message(linkValidateErrorMessage);
         })
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести ссылку на изображение',
         }),
-      movieId: Joi.number()
+      filmId: Joi.number()
         .required()
         .messages({
           'string.base': `${typeErrorMessage} числом`,
           'any.required': 'Необходимо ввести ID фильма',
+        }),
+      rating: Joi.string()
+        .required()
+        .messages({
+          'string.base': `${typeErrorMessage} строкой`,
+          'any.required': 'Необходимо ввести рейтинг фильма',
+        }),
+      ratingVoteCount: Joi.number()
+        .required()
+        .messages({
+          'string.base': `${typeErrorMessage} числом`,
+          'any.required': 'Необходимо ввести кол-во голосов фильма',
+        }),
+      genres: Joi.array()
+        .required()
+        .messages({
+          'array.base': `${typeErrorMessage} массивом`,
+          'any.required': 'Необходимо ввести жанры фильма',
         }),
     }).unknown(true),
 });

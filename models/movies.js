@@ -2,16 +2,28 @@ const mongoose = require('mongoose');
 const { isURL } = require('validator');
 
 const moviesSchema = mongoose.Schema({
-  country: {
-    type: String,
+  countries: {
+    type: Array,
     required: true,
   },
   director: {
     type: String,
+    required: false,
+  },
+  rating: {
+    type: String,
     required: true,
   },
-  duration: {
+  ratingVoteCount: {
     type: Number,
+    required: true,
+  },
+  genres: {
+    type: Array,
+    required: true,
+  },
+  filmLength: {
+    type: String,
     required: true,
   },
   year: {
@@ -20,21 +32,21 @@ const moviesSchema = mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
-  movieId: {
+  filmId: {
     type: Number,
     required: true,
   },
-  nameRU: {
+  nameRu: {
     type: String,
     required: true,
   },
-  nameEN: {
+  nameEn: {
     type: String,
-    required: true,
+    required: false,
   },
-  image: {
+  posterUrl: {
     type: String,
     required: true,
     validate: {
@@ -44,7 +56,7 @@ const moviesSchema = mongoose.Schema({
   },
   trailerLink: {
     type: String,
-    required: true,
+    required: false,
     validate: {
       validator: (url) => isURL(url),
       message: 'Неправильный формат ссылки',
@@ -52,7 +64,7 @@ const moviesSchema = mongoose.Schema({
   },
   thumbnail: {
     type: String,
-    required: true,
+    required: false,
     validate: {
       validator: (url) => isURL(url),
       message: 'Неправильный формат ссылки',
