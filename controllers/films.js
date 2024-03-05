@@ -18,3 +18,9 @@ module.exports.getVideos = (req, res, next) => {
     .then((response) => res.send(response.data))
     .catch((err) => next(err));
 };
+
+module.exports.getStaff = (req, res, next) => {
+  axios.get(`${apiLink}/v1/staff?filmId=${req.params._id}`, apiConfig)
+    .then((response) => res.send(response.data))
+    .catch((err) => next(err));
+};
