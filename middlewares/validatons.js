@@ -99,6 +99,18 @@ module.exports.validateMovieBody = celebrate({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести ссылку на изображение',
         }),
+      posterUrlPreview: Joi.string()
+        .required()
+        .custom((value, helpers) => {
+          if (isURL(value)) {
+            return value;
+          }
+          return helpers.message(linkValidateErrorMessage);
+        })
+        .messages({
+          'string.base': `${typeErrorMessage} строкой`,
+          'any.required': 'Необходимо ввести ссылку на изображение',
+        }),
       countries: Joi.array()
         .required()
         .messages({

@@ -53,6 +53,14 @@ const moviesSchema = mongoose.Schema({
       message: 'Неправильный формат ссылки',
     },
   },
+  posterUrlPreview: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (url) => isURL(url),
+      message: 'Неправильный формат ссылки',
+    },
+  },
   trailerLink: {
     type: String,
     required: false,
