@@ -111,7 +111,7 @@ module.exports.validateMovieBody = celebrate({
           'string.base': `${typeErrorMessage} строкой`,
           'any.required': 'Необходимо ввести режисера фильма',
         }),
-      filmLength: Joi.string()
+      filmLength: Joi.string().allow(null)
         .required()
         .messages({
           'string.base': `${typeErrorMessage} строкой`,
