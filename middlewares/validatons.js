@@ -37,7 +37,6 @@ module.exports.validateSignUp = celebrate({
           'string.empty': passwordRequireMessage,
           'any.required': passwordRequireMessage,
         }),
-      apiToken: Joi.string(),
     }),
 });
 
