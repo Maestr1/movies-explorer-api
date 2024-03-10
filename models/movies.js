@@ -23,8 +23,7 @@ const moviesSchema = mongoose.Schema({
     required: true,
   },
   filmLength: {
-    type: String,
-    required: true,
+    type: String || null,
   },
   year: {
     type: String,
@@ -47,6 +46,14 @@ const moviesSchema = mongoose.Schema({
     required: false,
   },
   posterUrl: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (url) => isURL(url),
+      message: 'Неправильный формат ссылки',
+    },
+  },
+  posterUrlPreview: {
     type: String,
     required: true,
     validate: {
