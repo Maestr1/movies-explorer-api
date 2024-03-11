@@ -24,3 +24,10 @@ module.exports.getStaff = (req, res, next) => {
     .then((response) => res.send(response.data))
     .catch((err) => next(err));
 };
+
+module.exports.findFilms = (req, res, next) => {
+  const params = new URLSearchParams(req.query);
+  axios.get(`${apiLink}/v2.2/films?${params}`, apiConfig)
+    .then((response) => res.send(response.data))
+    .catch((err) => next(err));
+};
